@@ -1,12 +1,26 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, signal, WritableSignal } from '@angular/core';
 
 @Component({
-  imports: [RouterOutlet],
+  standalone: true,
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('counter-app');
+  counter: WritableSignal<number> = signal<number>(0);
+
+  increment(): void {
+    this.counter.update((val) => val + 1);
+  }
+
+  decrement(): void {
+    if (this.counter() > 0) {
+      this.counter.update((val) => val - 1);
+    }
+  }
+
+  reset(): void {
+    this.counter.set(0);
+  }
 }
+
